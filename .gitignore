@@ -1,0 +1,5 @@
+*.log
+*.tar.gz
+*.swp
+.vscode/
+config/toolkit.conf
