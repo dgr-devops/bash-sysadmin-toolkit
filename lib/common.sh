@@ -3,10 +3,14 @@
 # Se carga con: source "$(dirname "${BASH_SOURCE[0]}")/../lib/common.sh"
 # No se ejecuta directamente.
 
+# Librería: las constantes se usan desde los scripts que la cargan.
+# shellcheck disable=SC2034
+
 # Códigos de salida estándar (compatibles con los plugins de Nagios).
 readonly EXIT_OK=0
 readonly EXIT_WARNING=1
 readonly EXIT_CRITICAL=2
+readonly EXIT_UNKNOWN=3
 readonly EXIT_USAGE=64
 
 # Colores solo si la salida es una terminal y NO_COLOR no está definido.
