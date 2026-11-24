@@ -25,7 +25,7 @@ Opciones:
   -i         Incluye también los puertos que solo escuchan en loopback
   -h         Muestra esta ayuda
 
-Sin -a ni -f se usa TOOLKIT_ALLOWED_PORTS (config/toolkit.conf). Si tampoco
+Sin -a ni -f se usa TOOLKIT_ALLOWED_PORTS (toolkit.conf). Si tampoco
 existe, el script solo informa y devuelve 0.
 
 Códigos de salida: 0 = todo permitido, 1 = hay puertos no permitidos, 3 = desconocido, 64 = uso incorrecto.

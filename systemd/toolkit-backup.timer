@@ -1,0 +1,15 @@
+# Ejemplo de temporizador de systemd: lanza toolkit-backup.service cada día a las 03:00.
+# Ver toolkit-backup.service para las instrucciones de instalación.
+
+[Unit]
+Description=Copia de seguridad diaria (bash-sysadmin-toolkit)
+
+[Timer]
+OnCalendar=*-*-* 03:00:00
+# Si el equipo estaba apagado a esa hora, ejecuta la copia al arrancar.
+Persistent=true
+# Reparte la carga cuando hay varios servidores con el mismo timer.
+RandomizedDelaySec=10min
+
+[Install]
+WantedBy=timers.target

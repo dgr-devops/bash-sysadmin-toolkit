@@ -1,0 +1,26 @@
+# Ejemplo de crontab para bash-sysadmin-toolkit.
+#
+# Instalación en /etc/cron.d (como root; este formato lleva el usuario en la 6.ª columna):
+#   install -m 0644 cron/toolkit.cron /etc/cron.d/toolkit
+# Para un crontab de usuario (`crontab -e`) quita la columna "root".
+#
+# Los scripts deben estar enlazados con `make install PREFIX=/usr/local`.
+# Cada ejecución envía su salida al log del sistema con `logger`.
+
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+# En cron.d hay que fijar MAILTO si quieres recibir los errores por correo.
+#MAILTO=admin@example.com
+
+# m  h  dom mon dow  usuario  comando
+# Cada hora: uso de disco (1 = aviso, 2 = crítico)
+0  *  *   *   *    root     check-disk -w 80 -c 90 2>&1 | logger -t toolkit-disk
+# Cada 5 minutos: servicios imprescindibles
+*/5 * *   *   *    root     check-services sshd cron 2>&1 | logger -t toolkit-services
+# Cada día a las 03:00: copia rotativa de /etc conservando 7
+0  3  *   *   *    root     backup-rotate -d /var/backups/toolkit -k 7 -n etc /etc 2>&1 | logger -t toolkit-backup
+# Domingos a las 04:00: limpieza de logs de la aplicación (--apply ejecuta de verdad)
+0  4  *   *   0    root     clean-logs --apply -c 7 -d 30 /var/log/miapp 2>&1 | logger -t toolkit-logs
+# Cada día a las 08:00: puertos inesperados y auditoría SSH
+0  8  *   *   *    root     check-ports -a 22,80,443 2>&1 | logger -t toolkit-ports
+5  8  *   *   *    root     ssh-hardening-check 2>&1 | logger -t toolkit-ssh

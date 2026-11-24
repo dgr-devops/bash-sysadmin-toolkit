@@ -1,0 +1,12 @@
+# Ejemplo de temporizador de systemd: lanza toolkit-check-disk.service cada hora.
+# Ver toolkit-check-disk.service para las instrucciones de instalación.
+
+[Unit]
+Description=Comprobación horaria de disco (bash-sysadmin-toolkit)
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+
+[Install]
+WantedBy=timers.target

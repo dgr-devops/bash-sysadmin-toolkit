@@ -1,0 +1,23 @@
+# Ejemplo de unidad de systemd para backup-rotate.sh.
+#
+# Instalación (como root):
+#   install -m 0644 systemd/toolkit-backup.* /etc/systemd/system/
+#   systemctl daemon-reload
+#   systemctl enable --now toolkit-backup.timer
+#
+# Ajusta las rutas: este ejemplo asume que `make install PREFIX=/usr/local` ya enlazó
+# los scripts. Origen (/etc), destino y número de copias se indican en ExecStart.
+
+[Unit]
+Description=Copia de seguridad rotativa (bash-sysadmin-toolkit)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/backup-rotate -d /var/backups/toolkit -k 7 -n etc /etc
+# Endurecimiento: la copia necesita leer todo y escribir solo en el destino.
+ProtectSystem=strict
+ReadWritePaths=/var/backups/toolkit
+PrivateTmp=true
+NoNewPrivileges=true
+Nice=10
+IOSchedulingClass=idle

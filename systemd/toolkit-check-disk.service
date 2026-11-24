@@ -1,0 +1,22 @@
+# Ejemplo de unidad de systemd para check-disk.sh.
+#
+# Instalación (como root):
+#   install -m 0644 systemd/toolkit-check-disk.* /etc/systemd/system/
+#   systemctl daemon-reload
+#   systemctl enable --now toolkit-check-disk.timer
+#
+# check-disk devuelve 1 (aviso) o 2 (crítico) cuando el disco se llena; systemd marca
+# la unidad como fallida, así que se ve con `systemctl --failed` o `journalctl -u`.
+# SuccessExitStatus=1 hace que el aviso NO cuente como fallo y solo el crítico (2) sí.
+
+[Unit]
+Description=Comprobación de uso de disco (bash-sysadmin-toolkit)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/check-disk -w 80 -c 90
+SuccessExitStatus=1
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+NoNewPrivileges=true
