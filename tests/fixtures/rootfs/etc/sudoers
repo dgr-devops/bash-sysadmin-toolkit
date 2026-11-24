@@ -1,0 +1,5 @@
+# Fichero de ejemplo para tests (datos sintéticos).
+Defaults env_reset
+root ALL=(ALL:ALL) ALL
+%sudo ALL=(ALL:ALL) ALL
+@includedir /etc/sudoers.d
