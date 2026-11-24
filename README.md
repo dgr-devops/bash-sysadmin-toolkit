@@ -1,5 +1,6 @@
 # bash-sysadmin-toolkit
 
+[![CI](https://github.com/dgr-devops/bash-sysadmin-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/dgr-devops/bash-sysadmin-toolkit/actions/workflows/ci.yml)
 ![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-green)
 
 Colección de **8 scripts de Bash** para las tareas del día a día de un administrador de sistemas Linux:
@@ -308,6 +309,7 @@ Lo que se ha ejecutado de verdad (el detalle y los límites están en [`docs/dec
 - Los mismos 129 tests en un contenedor Ubuntu 18.04 (**Bash 4.4**), como usuario normal y como root.
 - `check-services -r`, `user-audit` y `ssh-hardening-check` ejecutados como root en un contenedor.
 - `make install` / `make uninstall`, `systemd-analyze verify` de los units y `actionlint` del workflow.
+- **CI en GitHub Actions** (shellcheck y bats en `ubuntu-latest`): ejecutado y en verde tras publicar el repositorio.
 
 Sin verificar: timers de systemd activados en un sistema en marcha, validación del crontab (no hay `cron` en
 la máquina de desarrollo), reinicio contra un systemd real y otras distribuciones distintas de las dos anteriores.

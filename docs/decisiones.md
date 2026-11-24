@@ -105,6 +105,7 @@ Sin lista de permitidos, el script informa pero no juzga: evita que una instalac
 - `make install` / `make uninstall` en un prefijo temporal: enlaza los 8 scripts, el enlace funciona y no se borran ficheros ajenos.
 - `systemd-analyze --root=... verify` (systemd 262) sobre los cuatro units con los ejecutables en su sitio: sin avisos.
 - `actionlint` (imagen oficial de Docker) sobre `.github/workflows/ci.yml`: sin avisos.
+- **CI en GitHub Actions**: los dos jobs (`shellcheck` y `bats` con `make lint` / `make test`) han terminado en verde en `ubuntu-latest`.
 
 **No verificado:**
 

@@ -13,7 +13,7 @@ jobs:
     name: shellcheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Versión de shellcheck
         run: shellcheck --version
       - name: Analizar scripts y librería
@@ -23,7 +23,7 @@ jobs:
     name: bats
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Instalar bats
         run: |
           sudo apt-get update
