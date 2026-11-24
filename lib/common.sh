@@ -49,3 +49,38 @@ require_cmd() {
 is_uint() {
   [[ "${1:-}" =~ ^[0-9]+$ ]]
 }
+
+# load_config — carga valores por defecto desde un fichero de configuración.
+# Busca, por este orden: $TOOLKIT_CONF, ~/.config/toolkit.conf y /etc/toolkit.conf.
+# El fichero NO se ejecuta: solo se leen líneas `TOOLKIT_NOMBRE=valor`.
+# Una variable ya definida en el entorno tiene prioridad sobre el fichero.
+load_config() {
+  local file="" candidate line key value
+  if [[ -n "${TOOLKIT_CONF:-}" ]]; then
+    [[ -r "$TOOLKIT_CONF" ]] || die "No se puede leer la configuración: ${TOOLKIT_CONF}" "$EXIT_USAGE"
+    file="$TOOLKIT_CONF"
+  else
+    for candidate in "${XDG_CONFIG_HOME:-${HOME:-}/.config}/toolkit.conf" /etc/toolkit.conf; do
+      if [[ -r "$candidate" ]]; then
+        file="$candidate"
+        break
+      fi
+    done
+  fi
+  [[ -n "$file" ]] || return 0
+
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    if [[ "$line" =~ ^[[:space:]]*(TOOLKIT_[A-Z0-9_]+)[[:space:]]*=[[:space:]]*(.*)$ ]]; then
+      key="${BASH_REMATCH[1]}"
+      value="${BASH_REMATCH[2]}"
+      value="${value%"${value##*[![:space:]]}"}" # quita espacios finales
+      value="${value%\"}"
+      value="${value#\"}"
+      value="${value%\'}"
+      value="${value#\'}"
+      if [[ -z "${!key+x}" ]]; then
+        export "${key}=${value}"
+      fi
+    fi
+  done <"$file"
+}
