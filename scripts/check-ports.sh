@@ -6,7 +6,8 @@
 
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# readlink -f: permite ejecutar el script a través de un enlace simbólico (make install).
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
 # shellcheck source=../lib/common.sh
 source "${SCRIPT_DIR}/../lib/common.sh"
 

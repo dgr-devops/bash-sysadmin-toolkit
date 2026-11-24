@@ -91,7 +91,7 @@ exit 0'
 @test "sin systemctl devuelve error de dependencia" {
   # PATH mínimo sin systemctl: solo lo imprescindible para ejecutar bash.
   mkdir "${BATS_TEST_TMPDIR}/minimo"
-  for cmd in bash dirname date cat env; do
+  for cmd in bash dirname readlink date cat env; do
     ln -s "$(command -v "$cmd")" "${BATS_TEST_TMPDIR}/minimo/${cmd}"
   done
   PATH="${BATS_TEST_TMPDIR}/minimo" run "$(command -v bash)" "${SCRIPTS}/check-services.sh" nginx

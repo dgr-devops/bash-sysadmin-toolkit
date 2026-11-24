@@ -37,3 +37,10 @@ setup() {
   run "${SCRIPTS}/sysinfo.sh"
   [[ "$output" == *"$(uname -r)"* ]]
 }
+
+@test "funciona al ejecutarse a través de un enlace simbólico" {
+  ln -s "${SCRIPTS}/sysinfo.sh" "${BATS_TEST_TMPDIR}/sysinfo"
+  run "${BATS_TEST_TMPDIR}/sysinfo"
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"Host:"* ]]
+}
