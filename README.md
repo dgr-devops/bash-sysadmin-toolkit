@@ -300,10 +300,17 @@ bash-sysadmin-toolkit/
 └── .github/workflows/ci.yml
 ```
 
-## Limitaciones conocidas
+## Verificación
 
-Desarrollado y probado en una única distribución (Arch/CachyOS, Bash 5, bats 1.14). El detalle de lo
-verificado y lo que no, con el razonamiento de cada decisión, está en [`docs/decisiones.md`](docs/decisiones.md).
+Lo que se ha ejecutado de verdad (el detalle y los límites están en [`docs/decisiones.md`](docs/decisiones.md#11-qué-se-ha-verificado-y-qué-no)):
+
+- `shellcheck` sin avisos y `bats tests/` con 129 tests correctos en Arch/CachyOS (Bash 5).
+- Los mismos 129 tests en un contenedor Ubuntu 18.04 (**Bash 4.4**), como usuario normal y como root.
+- `check-services -r`, `user-audit` y `ssh-hardening-check` ejecutados como root en un contenedor.
+- `make install` / `make uninstall`, `systemd-analyze verify` de los units y `actionlint` del workflow.
+
+Sin verificar: timers de systemd activados en un sistema en marcha, validación del crontab (no hay `cron` en
+la máquina de desarrollo), reinicio contra un systemd real y otras distribuciones distintas de las dos anteriores.
 
 ## Licencia
 

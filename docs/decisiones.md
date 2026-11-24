@@ -95,23 +95,25 @@ Sin lista de permitidos, el script informa pero no juzga: evita que una instalac
 
 ## 11. Qué se ha verificado y qué no
 
-**Verificado ejecutándolo** (Arch/CachyOS, Bash 5, shellcheck y bats instalados):
+**Verificado ejecutándolo:**
 
-- `shellcheck` sin avisos en los 8 scripts y en `lib/common.sh`.
-- `bats tests/`: 129 tests correctos.
-- Los 8 scripts, ejecutados contra el sistema real o contra datos de prueba, con la salida que muestra el README.
+- `shellcheck` sin avisos en los 8 scripts y en `lib/common.sh` (Arch/CachyOS).
+- `bats tests/`: 129 tests correctos en Arch/CachyOS (Bash 5, bats 1.14).
+- **Bash 4.4**: los mismos 129 tests en un contenedor Ubuntu 18.04 (Bash 4.4.20, bats 1.10), como usuario normal y como root. Como root, 2 tests se saltan solos (no tienen sentido siendo root).
+- **Como root, en el contenedor**: `check-services -r` reinicia y revalida un servicio (con un `systemctl` simulado con estado); `user-audit` lee un `/etc/sudoers` y un `/etc/shadow` reales; `ssh-hardening-check` evalúa el `sshd_config` real de `openssh-server`.
+- Los 8 scripts ejecutados contra el sistema real o contra datos de prueba, con la salida que muestra el README. `check-ports` también en un espacio de red aislado (`unshare -rn`) con servidores HTTP reales, y con el `ss` real de Ubuntu 18.04.
 - `make install` / `make uninstall` en un prefijo temporal: enlaza los 8 scripts, el enlace funciona y no se borran ficheros ajenos.
-- `systemd-analyze verify` sobre los units: solo se queja de que los binarios de `/usr/local/bin` no están instalados (esperado).
-- `check-ports` en un espacio de red aislado (`unshare -rn`) con servidores HTTP reales.
+- `systemd-analyze --root=... verify` (systemd 262) sobre los cuatro units con los ejecutables en su sitio: sin avisos.
+- `actionlint` (imagen oficial de Docker) sobre `.github/workflows/ci.yml`: sin avisos.
 
 **No verificado:**
 
-- El workflow de CI **no se ha ejecutado** (el repositorio aún no está en GitHub): solo se comprobó que el YAML es válido y que `make lint` y `make test` funcionan en local.
-- Los timers y services de systemd **no se han instalado ni activado**; el crontab **no se ha validado** (no hay `crontab` en la máquina de desarrollo).
-- `check-services -r` (reiniciar servicios) requiere root: solo se prueba que sin root se rechaza; el reinicio en sí **no se ha probado**.
-- `user-audit` y `ssh-hardening-check` no se han probado como root sobre un servidor real; `/etc/sudoers` y `/etc/shadow` no son legibles sin privilegios.
-- Solo una distribución y una versión de OpenSSH. Los valores por defecto de `ssh-hardening-check` pueden diferir en otras versiones.
-- Bash 4.4 es el mínimo declarado por las características que se usan, pero solo se ha probado con Bash 5.
+- Los timers y services **no se han instalado ni activado** en un systemd en marcha: solo se ha validado su sintaxis y que los ejecutables existen.
+- El crontab **no se ha validado**: no hay `cron` ni `crontab` en la máquina de desarrollo.
+- El reinicio de `check-services -r` se probó con un `systemctl` simulado, no contra un systemd real.
+- `user-audit` y `ssh-hardening-check` no se han probado sobre un servidor real en producción, solo en un contenedor limpio.
+- Los valores por defecto de `ssh-hardening-check` son los de OpenSSH recientes; en versiones antiguas pueden diferir (no se consulta `sshd -T`).
+- Solo dos entornos: Arch/CachyOS y Ubuntu 18.04 (contenedor). Otras distribuciones no se han probado.
 
 ## 12. Fuera de alcance, a propósito
 
