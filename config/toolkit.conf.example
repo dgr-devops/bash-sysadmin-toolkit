@@ -1,0 +1,31 @@
+# toolkit.conf.example — configuración de ejemplo del bash-sysadmin-toolkit.
+#
+# Cópiala a una de estas rutas (se usa la primera que exista):
+#   $TOOLKIT_CONF                 (ruta explícita por variable de entorno)
+#   ~/.config/toolkit.conf
+#   /etc/toolkit.conf
+#
+# Formato: una línea TOOLKIT_NOMBRE=valor. El fichero NO se ejecuta como shell,
+# así que no se expanden variables ni comandos. Una variable ya definida en el
+# entorno tiene prioridad sobre este fichero, y las opciones de la línea de
+# comandos tienen prioridad sobre ambos.
+#
+# No guardes secretos aquí: este fichero solo contiene rutas y números.
+
+# --- check-ports.sh -----------------------------------------------------------
+# Puertos que pueden estar en escucha, separados por comas.
+TOOLKIT_ALLOWED_PORTS=22,80,443
+
+# --- clean-logs.sh ------------------------------------------------------------
+# Comprime los logs con más de N días y borra los que tengan más de M días.
+TOOLKIT_LOG_COMPRESS_DAYS=7
+TOOLKIT_LOG_DELETE_DAYS=30
+
+# --- backup-rotate.sh ---------------------------------------------------------
+# Directorio donde se guardan las copias y cuántas se conservan.
+TOOLKIT_BACKUP_DEST=/var/backups/toolkit
+TOOLKIT_BACKUP_KEEP=7
+
+# --- ssh-hardening-check.sh ---------------------------------------------------
+# Fichero sshd_config a revisar si no se pasa uno como argumento.
+TOOLKIT_SSHD_CONFIG=/etc/ssh/sshd_config
