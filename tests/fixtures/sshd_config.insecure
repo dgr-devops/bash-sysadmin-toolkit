@@ -1,0 +1,10 @@
+# sshd_config de ejemplo INSEGURO (datos sintéticos para tests y demostración)
+Port 2222
+PermitRootLogin yes
+PasswordAuthentication yes
+PermitEmptyPasswords no
+X11Forwarding yes
+MaxAuthTries 10
+PermitRootLogin no   # segunda aparición: sshd la ignora
+Match User deploy
+    PasswordAuthentication no
